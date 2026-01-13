@@ -12,6 +12,7 @@ type User = {
 };
 
 type AuthContextType = {
+  token: string | null;
   user: User | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -67,9 +68,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     router.push("/login");
   };
 
+
+
+
   return (
     <AuthContext.Provider
       value={{
+        token: localStorage.getItem("token"),
         user,
         isAuthenticated: !!user,
         login,
@@ -80,3 +85,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     </AuthContext.Provider>
   );
 }
+
+//   export const useAuth = () => {
+//   const context = useContext(AuthContext);
+//   if (!context) throw new Error("useAuth must be used within an AuthProvider");
+//   return context;
+// };

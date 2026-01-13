@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { registerApi, RegisterModel } from "@/service/auth"
+import { registerApi, RegisterModel } from "@/service/auth/auth"
 
 export default function Signup() {
     const router = useRouter()
