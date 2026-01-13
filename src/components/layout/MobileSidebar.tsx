@@ -8,8 +8,11 @@ import { useAuth } from "@/context/AuthContext";
 import { menu } from "@/lib/menu";
 
 export default function MobileSidebar() {
-  const { role } = useAuth();
-  const items = menu[role];
+  const { user } = useAuth(); // destructure user, not role
+
+  if (!user) return null; // user not logged in
+
+  const items = menu[user.role]; // role comes from user
 
   return (
     <Sheet>

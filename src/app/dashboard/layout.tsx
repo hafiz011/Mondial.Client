@@ -16,6 +16,7 @@
 //     </div>
 //   );
 // }
+import AuthGuard from "@/components/layout/AuthGuard";
 import DesktopSidebar from "@/components/layout/DesktopSidebar";
 import Topbar from "@/components/layout/Topbar";
 
@@ -25,13 +26,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen">
-      <DesktopSidebar />
-
-      <div className="flex flex-1 flex-col">
-        <Topbar />
-        <main className="flex-1 p-6">{children}</main>
+    <AuthGuard>
+      <div className="flex h-screen">
+        <DesktopSidebar />
+        <div className="flex flex-1 flex-col">
+          <Topbar />
+          <main className="p-6">{children}</main>
+        </div>
       </div>
-    </div>
+    </AuthGuard>
   );
 }
