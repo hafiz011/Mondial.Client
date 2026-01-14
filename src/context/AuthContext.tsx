@@ -24,16 +24,23 @@ export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
 
+  // ✅ SAFE hydration
   useEffect(() => {
-    const stored = localStorage.getItem("user");
-    if (!stored) return;
+    if (typeof window === "undefined") return;
 
-    try {
-      setUser(JSON.parse(stored));
-    } catch {
-      localStorage.clear();
+    const storedUser = localStorage.getItem("user");
+    const storedToken = localStorage.getItem("token");
+
+    if (storedUser && storedToken) {
+      try {
+        setUser(JSON.parse(storedUser));
+        setToken(storedToken);
+      } catch {
+        localStorage.clear();
+      }
     }
   }, []);
 
@@ -51,6 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("user", JSON.stringify(user));
 
     setUser(user);
+    setToken(token);
 
     const roleRoutes: Record<UserRole, string> = {
       Admin: "/dashboard/admin",
@@ -65,18 +73,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     localStorage.clear();
     setUser(null);
+    setToken(null);
     router.push("/login");
   };
-
-
-
 
   return (
     <AuthContext.Provider
       value={{
-        token: localStorage.getItem("token"),
+        token,
         user,
-        isAuthenticated: !!user,
+        isAuthenticated: !!user && !!token,
         login,
         logout,
       }}
@@ -85,9 +91,3 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     </AuthContext.Provider>
   );
 }
-
-//   export const useAuth = () => {
-//   const context = useContext(AuthContext);
-//   if (!context) throw new Error("useAuth must be used within an AuthProvider");
-//   return context;
-// };

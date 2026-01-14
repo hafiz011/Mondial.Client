@@ -48,6 +48,7 @@ export default function Signup() {
 
     return (
         <>
+        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
             <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">Create Your Account</h1>
 
             {errorMsg && (
@@ -113,6 +114,7 @@ export default function Signup() {
                 Already have an account?{" "}
                 <Link href="/login" className="text-brand-cyan hover:underline font-medium">Log in</Link>
             </div>
+        </div>
         </>
     )
 }
