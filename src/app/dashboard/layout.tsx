@@ -1,4 +1,5 @@
-// import Sidebar from "@/components/layout/Sidebar";
+// import { SidebarProvider } from "@/components/ui/sidebar";
+// import AppSidebar from "@/components/layout/AppSidebar";
 // import Topbar from "@/components/layout/Topbar";
 
 // export default function DashboardLayout({
@@ -7,17 +8,24 @@
 //   children: React.ReactNode;
 // }) {
 //   return (
-//     <div className="flex h-screen bg-background">
-//       <Sidebar />
-//       <main className="flex-1">
-//         <Topbar />
-//         <div className="p-6">{children}</div>
-//       </main>
-//     </div>
+//     <SidebarProvider>
+//       <div className="flex min-h-screen">
+//         <AppSidebar />
+
+//         <div className="flex flex-1 flex-col">
+//           <Topbar />
+//           <main className="flex-1 p-4 md:p-6">
+//             {children}
+//           </main>
+//         </div>
+//       </div>
+//     </SidebarProvider>
 //   );
 // }
-import AuthGuard from "@/components/layout/AuthGuard";
-import DesktopSidebar from "@/components/layout/DesktopSidebar";
+
+
+import { SidebarProvider } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/layout/AppSidebar";
 import Topbar from "@/components/layout/Topbar";
 
 export default function DashboardLayout({
@@ -26,14 +34,25 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthGuard>
-      <div className="flex h-screen">
-        <DesktopSidebar />
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+
+        {/* LEFT: SIDEBAR */}
+        <AppSidebar />
+
+        {/* RIGHT: TOPBAR + CONTENT */}
         <div className="flex flex-1 flex-col">
+          
+          {/* Topbar only takes CONTENT width */}
           <Topbar />
-          <main className="p-6">{children}</main>
+
+          {/* Content */}
+          <main className="flex-1 overflow-auto p-4 md:p-6">
+            {children}
+          </main>
+
         </div>
       </div>
-    </AuthGuard>
+    </SidebarProvider>
   );
 }

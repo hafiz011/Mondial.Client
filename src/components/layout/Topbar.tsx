@@ -1,6 +1,6 @@
 "use client";
 
-import MobileSidebar from "./MobileSidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import ThemeToggle from "../ThemeToggle";
 import { LayoutGrid, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -8,42 +8,42 @@ import { useBreadcrumb } from "@/hooks/useBreadcrumb";
 import NotificationBell from "@/components/notifications/NotificationBell";
 import MessageIcon from "@/components/messages/MessageIcon";
 
-
 export default function Topbar() {
   const breadcrumbs = useBreadcrumb();
 
   return (
-    <header className="w-full border-b bg-background">
-      <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between px-4 md:px-8">
-        
-        {/* Left */}
-        <div className="flex items-center gap-3">
-          <MobileSidebar />
+    <header className="sticky top-0 z-40 w-full border-b bg-sidebar text-sidebar-foreground">
+      <div className="flex h-14 items-center justify-between px-3 sm:px-4 lg:px-6">
 
-          {/* Icon */}
+        {/* LEFT */}
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          {/* Sidebar trigger */}
+          <SidebarTrigger />
+
+          {/* App icon */}
           <div className="hidden sm:flex h-8 w-8 items-center justify-center rounded-lg border">
             <LayoutGrid className="h-5 w-5 text-muted-foreground" />
           </div>
 
-          {/* Breadcrumb */}
-          <nav className="hidden sm:flex items-center text-sm">
+          {/* Breadcrumb (desktop only) */}
+          <nav className="hidden lg:flex items-center text-sm min-w-0">
             {breadcrumbs.map((item, index) => {
               const isLast = index === breadcrumbs.length - 1;
 
               return (
-                <div key={item.href} className="flex items-center">
+                <div key={item.href} className="flex items-center min-w-0">
                   {index !== 0 && (
                     <ChevronRight className="mx-2 h-4 w-4 text-muted-foreground" />
                   )}
 
                   {isLast ? (
-                    <span className="text-xs font-medium text-foreground">
+                    <span className="font-medium truncate">
                       {item.label}
                     </span>
                   ) : (
                     <Link
                       href={item.href}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-muted-foreground hover:text-foreground truncate"
                     >
                       {item.label}
                     </Link>
@@ -54,12 +54,13 @@ export default function Topbar() {
           </nav>
         </div>
 
-        {/* Right */}
-        <div className="flex items-center gap-3">
+        {/* RIGHT */}
+        <div className="flex items-center gap-2 sm:gap-3">
           <MessageIcon />
           <NotificationBell />
           <ThemeToggle />
         </div>
+
       </div>
     </header>
   );
